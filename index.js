@@ -45,6 +45,42 @@ class Board extends React.Component {
 }
 
 class Game extends React.Component {
+  // create constructor
+  constructor(props) {
+    super(props);
+    this.state = {
+      history: [
+        {
+          squares: Array(9).fill(null);
+        }
+      ],
+      stepNumber: 0,
+      xIsNext: true
+    };
+  }
+
+  // class method to handle click events
+  handleClick(i) {
+    const history = this.state.history.slice(0, this.state.stepNumber + 1);
+    const current = history[history.length + 1];
+    const squares = current.squares.slice();
+
+    if (calculateWinner(squares) || squares[i]) {
+      return;
+    }
+
+    squares[i] = this.state.xIsNext ? "X" : "O";
+    thus.setState({
+      history: history.concat([
+        {
+          squares: squares
+        }
+      ]),
+      stepNumber: history.length,
+      xIsNext: !this.state.xIsNext
+    });
+  }
+
   render() {
     return (
       <div className="game">
